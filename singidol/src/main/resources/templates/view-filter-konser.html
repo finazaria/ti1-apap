@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SINGIDOL</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script 
+        src="http://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"
+    ></script>
+
+    <script src="https://getbootstrap.com/docs/4.1/assets/js/vendor/popper.min.js"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+    <nav th:replace="fragments/fragment :: navbar"></nav>
+    <div class="container">
+        <div class="card m-4 p-4">
+            <div class="card-body">
+                <div class="justify-content-center">
+                    <h2>Cari Konser</h2>
+                    <br>
+                    <form th:action="@{/carikonser}" method="GET">
+                        Pendapatan Minimal <br>
+                        <input class="form-control" type="number" name="pendapatan_minimal" min=0 th:value="${pendapatanMinimal}"/>
+                        <br>
+
+                        
+                        Idol <br>
+                        <!-- name => buat yang kita pass ke page selanjutnya. Value yang kita select disini, kita pass dengan nama "idol"
+                            So, di page selanjutnya, if we wanna access this value, just call it with "idol"-->
+                        <select name="idol" class="form-control">
+                            <option th:each="idol : ${listIdol}" th:selected="${idol.id == selectedIdolId}" th:value="${idol.id}" th:text="${idol.namaIdol}"></option>
+                        </select>
+                        <br>
+
+                        <button class="btn btn-primary" type="submit">Cari</button>
+                        <a class="btn btn-secondary" th:href="@{/konser}" style="margin-left: 30px;">Batal</a>
+                        <br><br>
+
+                        <hr>
+                        <br>
+                        <h3>Hasil Pencarian</h3>
+                        <br>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Konser</th>
+                                    <th>Pendapatan</th>
+                                    <th>Detail Konser</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="konser, iterationStatus : ${listFilteredKonser}">
+                                    <td th:text="${iterationStatus.count}"></td>
+                                    <td th:text="${konser.namaKonser}" ></td>
+                                    <td th:text="${konser.totalPendapatan}" ></td>
+                                    <td>
+                                        <div class="col">
+                                            <!-- <a class="btn btn-info" th:href="@{/course/view(code=${course.code})}">Detail</a> -->
+                                            <a class="btn btn-outline-primary" th:href="@{/konser/} + ${konser.id}">Detail</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

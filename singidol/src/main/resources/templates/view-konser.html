@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+    <meta charset="UTF-8">
+    <title>SINGIDOL</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script 
+        src="http://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"
+    ></script>
+
+    <script src="https://getbootstrap.com/docs/4.1/assets/js/vendor/popper.min.js"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+<body>
+    <nav th:replace="fragments/fragment :: navbar"></nav>
+    <div class="container">
+        <div class="card m-4 p-4">
+        <div class="card-body">
+            <div class="justify-content-center">
+                <h2>Detail Konser <span style="float: right;">
+                    <!-- <a class="btn btn-primary" th:href="@{/konser/ubah/} + ${penampilan.idKonser.id}">Ubah Konser</a> -->
+                    <a class="btn btn-info" th:href="@{/konser/ubah/} + ${konser.id}" style="width: 200px;">Ubah Konser</a>
+                </span></h2>
+                <br>
+                <p th:text="'Nama Konser: ' + ${konser.namaKonser}"></p>
+                <p th:text="'Waktu: ' + ${#temporals.format(konser.waktu, 'dd MMMM yyyy, HH:mm')}"></p>
+                <p th:text="'Tempat: ' + ${konser.tempat}"></p>
+                <p th:text="'Pendapatan: ' + ${konser.totalPendapatan}"></p>
+
+                <br>
+                <h4>Jadwal Tampil Idol</h4>
+                <br>
+                <div th:if="${konser.listPenampilan.size() != 0}">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Jam</th>
+                            <th>Idol</th>
+                            <th>Detail Idol</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="penampilan, iterationStatus : ${konser.listPenampilan}">
+                            <!-- <td th:text="${iterationStatus.count}"></td> -->
+                            <td th:text="${penampilan.jamMulaiTampil}"></td>
+                            <td th:text="${penampilan.idIdol.namaIdol}"></td>
+                            <td>
+                                <a class="btn btn-warning" th:href="@{/idol/} + ${penampilan.idIdol.id}">Detail</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div th:unless="${konser.listPenampilan.size() != 0}">
+                    <h5>Tidak ada penampilan.</h5>
+                </div>
+                <br>
+                <a class="btn btn-secondary" th:href="@{/konser}">Kembali</a>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </body>
+</html>

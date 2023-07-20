@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SINGIDOL</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script 
+        src="http://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"
+    ></script>
+
+    <script src="https://getbootstrap.com/docs/4.1/assets/js/vendor/popper.min.js"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+    <nav th:replace="fragments/fragment :: navbar"></nav>
+    <div class="container">
+        <div class="card m-4 p-4">
+            <div class="card-body">
+                <div class="justify-content-center">
+                    <h2>Daftar Konser</h2>
+                    <br>
+                    <div>
+                        <a th:href="@{/konser/cari}" class="mx-2 btn btn-primary">Filter</a>
+                    </div>
+                    <br>
+                    <div>
+                        <a th:href="@{/konser/tambah}" class="mx-2 btn btn-primary">+ Tambah Konser</a>
+                    </div>
+                    <br>
+                    <div th:if="${listKonser.size() != 0}">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Konser</th>
+                                    <th>Pendapatan</th>
+                                    <th>Detail Konser</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="konser, iterationStatus : ${listKonser}">
+                                    <td th:text="${iterationStatus.count}"></td>
+                                    <td th:text="${konser.namaKonser}" ></td>
+                                    <td th:text="${konser.totalPendapatan}" ></td>
+                                    <td>
+                                        <div class="col">
+                                            <!-- <a class="btn btn-info" th:href="@{/course/view(code=${course.code})}">Detail</a> -->
+                                            <a class="btn btn-outline-primary" th:href="@{/konser/} + ${konser.id}">Detail</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div th:unless="${listKonser.size() != 0}">
+                        <h5 style="text-align: center; opacity: 0.8;">Belum ada konser yang dibuat</h5>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <footer th:replace="fragments/fragment :: footer(page='Course')"></footer> -->
+</body>
+</html>

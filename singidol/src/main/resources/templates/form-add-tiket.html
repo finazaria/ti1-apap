@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SINGIDOL</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script 
+        src="http://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"
+    ></script>
+
+    <script src="https://getbootstrap.com/docs/4.1/assets/js/vendor/popper.min.js"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+    <nav th:replace="fragments/fragment :: navbar"></nav>
+    <div class="container">
+        <div class="card m-4 p-4">
+            <div class="card-body">
+                <div class="justify-content-center">
+                    <h2>Beli Tiket</h2>
+                    <br>
+                    <form th:action="@{/tiket/pesan}" th:object="${tiket}" method="POST">
+                        Konser <br>
+                        <select name="idKonser" th:field="*{idKonser.id}" class="form-control">
+                            <option th:each="konser : ${listKonser}" th:value="${konser.id}" th:text="${konser.namaKonser}"></option>
+                        </select>
+                        <br>
+
+                        <!-- <select name="idKonser" th:field="${tiket.idKonser}" class="form-control">
+                            <option th:each="konser : ${listKonser}" th:value="${konser.id}" th:text="${konser.namaKonser}"></option>
+                        </select> -->
+                        <!-- th:field = idKonser.id => karna kita mau ngiket banyak tiket ke satu konser, dengan id nya -->
+                    
+                        <!-- <input class="form-control" type="text" name="namaKonser" th:field="*{namaKonser}"/>
+                        <br><br> -->
+
+                        Nama Pemesanan <br>
+                        <input class="form-control" type="text" name="nama_lengkap" th:field="*{namaLengkap}"/>
+                        <br>
+
+                        Tanggal Lahir <br>
+                        <input required class="form-control" type="date" name="tanggal_lahir" th:field="*{tanggalLahir}" />
+                        <br>
+
+                        Email <br>
+                        <input class="form-control" type="text" name="email" th:field="*{email}"/>
+                        <br>
+
+                        Tipe Tiket <br>
+                        <select name="idTipe" th:field="*{idTipe.id}" class="form-control">
+                            <option th:each="tipe : ${listTipe}" th:value="${tipe.id}" th:text="${tipe.nama}"></option>
+                        </select>
+                        <br>
+                        <!-- <input class="form-control" type="text" name="tempat" th:field="*{tempat}"/>
+                        <br><br> -->
+                        <button class="btn btn-primary" type="submit">Pesan</button>
+                        <a class="btn btn-secondary" th:href="@{/tiket}" style="margin-left: 30px;">Batal</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

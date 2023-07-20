@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SINGIDOL</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script 
+        src="http://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"
+    ></script>
+
+    <script src="https://getbootstrap.com/docs/4.1/assets/js/vendor/popper.min.js"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+    <nav th:replace="fragments/fragment :: navbar"></nav>
+    <div class="container">
+        <div class="card m-4 p-4">
+            <div class="card-body">
+                <div class="justify-content-center">
+                    <h2>Daftar Tiket</h2>
+                    <br>
+                    <div>
+                        <a th:href="@{/tiket/pesan}" class="mx-2 btn btn-primary">+ Beli Tiket</a>
+                    </div>
+                    <br>
+                    <div th:if="${listTiket.size() != 0}">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>No Tiket</th>
+                                    <th>Konser</th>
+                                    <th>Tipe Tiket</th>
+                                    <th style="text-align: center;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="tiket, iterationStatus : ${listTiket}">
+                                    <td th:text="${iterationStatus.count}"></td>
+                                    <td th:text="${tiket.nomorTiket}" ></td>
+                                    <td th:text="${tiket.idKonser.namaKonser}" ></td>
+                                    <td th:text="${tiket.idTipe.nama}" ></td>
+                                    <td style="text-align: center;">
+                                        <div class="col">
+                                            <a class="btn btn-outline-primary" th:href="@{/tiket/} + ${tiket.id}">Detail</a> 
+                                            <div style="display: inline-block;">
+                                                <form th:action="@{/tiket/hapus/} + ${tiket.id}" method="POST">
+                                                    <input type="submit" value="Hapus" class="btn btn-outline-danger">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div th:unless="${listTiket.size() != 0}">
+                        <h5 style="text-align: center; opacity: 0.8;">Belum ada tiket yang dipesan</h5>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

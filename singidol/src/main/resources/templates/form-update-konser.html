@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SINGIDOL</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script 
+        src="http://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"
+    ></script>
+
+    <script src="https://getbootstrap.com/docs/4.1/assets/js/vendor/popper.min.js"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+    <nav th:replace="fragments/fragment :: navbar"></nav>
+    <div class="container">
+        <div class="card m-4 p-4">
+            <div class="card-body">
+                <div class="justify-content-center">
+                    <h2>Ubah Konser</h2>
+                    <br>
+                    <!-- <form th:action="@{/konser/ubah}" th:object="${konser}" method="POST"> -->
+                    <form th:action="@{/konser/ubah/} + ${konser.id}" th:object="${konser}" method="POST">
+                        Nama Konser <br>
+                        <input class="form-control" type="text" th:object="${konser}" th:field="*{namaKonser}"
+                        th:value="${konser.namaKonser}"/>
+                        <br><br>
+
+                        Waktu <br>
+                        <input required class="form-control" type="datetime-local" name="waktu" th:field="*{waktu}" 
+                        th:value="${konser.waktu}"/>
+                        <br><br>
+
+                        Tempat <br>
+                        <input class="form-control" type="text" name="tempat" th:field="*{tempat}"
+                        th:value="${konser.tempat}"/>
+                        <br><br>
+
+                        <!-- Daftar idol drop down menu -->
+                        <table class="table">
+                            <thead>
+                            <th>Idol</th>
+                            </thead>
+                            <tbody>
+                            <!-- tabel untuk setiap penampilan -->
+                            <tr th:each="idol, iterationStatus : *{listPenampilan}">
+                                <!-- iterate the idol -->
+                                <td>
+                                    <!-- th:field => nanti naro nya kemana -->
+                                    <select name="idIdol" th:field="*{listPenampilan[__${iterationStatus.index}__].idIdol.id}"
+                                            class="form-control">
+                                        <div th:each="idol, iterationStatus2 : ${listIdol}">
+                                            <option  th:value="${idol.id}" th:text="${idol.namaIdol}"></option>
+                                        </div>
+                                    </select>
+                                </td>
+                                <!-- iterate the time -->
+                                <td>
+                                    <input class="form-control" type="time" th:field="*{listPenampilan[__${iterationStatus.index}__].jamMulaiTampil}"/>
+                                </td>
+                                <!-- iterate the hapus button -->
+                                <td>
+                                    <button th:value="${iterationStatus.index}" class="btn btn-danger" type="submit"
+                                            name="deleteRowIdol">Hapus</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <button class="btn btn-info" type="submit" name="addRowIdol" style="margin-left: 30px; width: 500px;">+ Tambah Idol</button>
+                        <br>
+                        <br>
+                        <br>
+                        <button class="btn btn-primary" type="submit" name="save">Simpan</button>
+                        <a class="btn btn-secondary" th:href="@{/konser/} + ${konser.id}">Batal</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
